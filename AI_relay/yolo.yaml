@@ -1,0 +1,9 @@
+names:
+  0: player
+  1: ball
+  2: goalpost
+path:
+  "G:\\\uB2E4\uB978 \uCEF4\uD4E8\uD130\\\uB0B4 \uB178\uD2B8\uBD81\\ai\\gogo v3\\\
+  AI_relay\\data\\datasets"
+train: \Training\
+val: \Validation\
