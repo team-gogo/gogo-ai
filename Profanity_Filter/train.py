@@ -8,11 +8,11 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 
 # 상수 정의
 NUM_LABELS = 3
-OUTPUT_DIR = './'
+OUTPUT_DIR = './output/'
 NUM_EPOCHS = 50
 TRAIN_BATCH_SIZE = 12
 EVAL_BATCH_SIZE = 64
-LOGGING_DIR = './logs'
+LOGGING_DIR = './output/logs'
 LOGGING_STEPS = 500
 SAVE_TOTAL_LIMIT = 2
 
