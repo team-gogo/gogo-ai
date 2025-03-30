@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import logging
 import asyncio
+import uvicorn
 from middleware import LoggingMiddleware
 from event.consumer import consume
 from contextlib import asynccontextmanager
