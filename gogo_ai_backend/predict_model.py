@@ -34,7 +34,7 @@ async def predict_sentence(model, tokenizer, sentence, device):
 
 async def predictor(comment):
     comment = comment
-    checkpoint_path = "./output/checkpoint-52350"
+    checkpoint_path = "../Profanity_Filter/output/checkpoint-52350"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model, tokenizer = await initialize_model_and_tokenizer(checkpoint_path, device)
     prediction= await predict_sentence(model, tokenizer, comment, device)
