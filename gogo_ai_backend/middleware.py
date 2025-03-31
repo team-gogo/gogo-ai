@@ -8,7 +8,7 @@ from starlette.concurrency import iterate_in_threadpool
 from starlette.middleware.base import BaseHTTPMiddleware
 
 logger = logging.getLogger('GOGO-AI Logger')
-no_logging_path = ['/ai/health']
+no_logging_path = ['/ai/health','/favicon.ico']
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
