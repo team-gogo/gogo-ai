@@ -38,5 +38,6 @@ async def predictor(comment):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model, tokenizer = await initialize_model_and_tokenizer(checkpoint_path, device)
     prediction= await predict_sentence(model, tokenizer, comment, device)
-    
+    if prediction == 2:
+        prediction = 1
     return prediction
