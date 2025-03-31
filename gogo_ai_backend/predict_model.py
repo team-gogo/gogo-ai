@@ -39,5 +39,5 @@ async def predictor(comment):
     model, tokenizer = await initialize_model_and_tokenizer(checkpoint_path, device)
     prediction= await predict_sentence(model, tokenizer, comment, device)
     if prediction == 2:
-        prediction = 1
+        prediction = 0
     return prediction
