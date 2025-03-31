@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 async def lifespan(app: FastAPI):
     asyncio.create_task(consume())  # 비동기 태스크 실행
     yield
-
+ 
 
 app = FastAPI(lifespan=lifespan)
 
@@ -20,7 +20,7 @@ app.add_middleware(LoggingMiddleware)
 @app.get("/ai/health")
 async def root():
     return 'GOGO Ai Service OK'
-
+ 
 if __name__ == '__main__':
     try:
         # init_eureka()
