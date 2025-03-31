@@ -21,10 +21,6 @@ class EventProducer:
 
     @staticmethod
     async def create_event(topic: str, key: str, value: Union[BaseModel, dict]):
-        """
-        - `value`가 `BaseModel`이면 `.dict()` 호출 후 JSON 변환
-        - `value`가 이미 `dict`라면 바로 JSON 변환
-        """
         producer = await EventProducer.get_producer()
 
         if isinstance(value, BaseModel):

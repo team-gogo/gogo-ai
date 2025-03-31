@@ -7,14 +7,7 @@ from aiokafka import AIOKafkaConsumer
 from predict_model import predictor
 from config import KAFKA_HOST, KAFKA_PORT
 from event.producer import EventProducer
-
-class filtered_result(BaseModel):
-    id: str
-    boardId: Optional[int] = None 
-    comment: Optional[int] = None  
-
-    class Config:
-        exclude_none = True
+from schema.filter import filtered_result
     
 events={
     'board_create':{
@@ -51,7 +44,7 @@ async def consume():
                     **{events[msg.topic]['output']: model_output}
                 ).dict(exclude_none=True),
             )
-            continue
+            
 
     except Exception as e:
         logging.exception(f'Kafka consume exception {str(e)}')
