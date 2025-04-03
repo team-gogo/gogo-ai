@@ -3,9 +3,9 @@ import torch
 import pandas as pd
 
 # 데이터 및 모델 초기화
-def initialize_model_and_tokenizer(checkpoint_path, device):
+def initialize_model_and_tokenizer(hf_model, device):
     model = AutoModelForSequenceClassification.from_pretrained(
-        checkpoint_path, local_files_only=True, trust_remote_code=True, use_auth_token=False
+        hf_model, trust_remote_code=True, use_auth_token=False
     )
     tokenizer = AutoTokenizer.from_pretrained("beomi/KcELECTRA-base")
     model.to(device)
@@ -37,10 +37,10 @@ def predict_sentence(model, tokenizer, sentence, device):
 
 def main():
     df = pd.read_csv('../Profanity_Filter/data/datasets/test.csv')
-    checkpoint_path = "./output/checkpoint-52350"
+    hf_model = "kdyeon0309/gogo_forpanity_filter"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model, tokenizer = initialize_model_and_tokenizer(checkpoint_path, device)
+    model, tokenizer = initialize_model_and_tokenizer(hf_model, device)
 
     for comment in df['comments']:
         print(predict_sentence(model, tokenizer, comment, device))
