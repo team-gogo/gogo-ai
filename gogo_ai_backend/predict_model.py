@@ -5,7 +5,7 @@ import asyncio
 
 async def initialize_model_and_tokenizer(hf_model, device):
     model = AutoModelForSequenceClassification.from_pretrained(
-        hf_model, local_files_only=True, trust_remote_code=True, use_auth_token=False
+        hf_model, trust_remote_code=True, use_auth_token=False
     )
     tokenizer = AutoTokenizer.from_pretrained("beomi/KcELECTRA-base")
     model.to(device)
@@ -39,5 +39,5 @@ async def predictor(comment):
     model, tokenizer = await initialize_model_and_tokenizer(hf_model, device)
     prediction= await predict_sentence(model, tokenizer, comment, device)
     if prediction == 2:
-        prediction = 0
+        prediction = 1
     return prediction

@@ -5,7 +5,7 @@ import pandas as pd
 # 데이터 및 모델 초기화
 def initialize_model_and_tokenizer(hf_model, device):
     model = AutoModelForSequenceClassification.from_pretrained(
-        hf_model, local_files_only=True, trust_remote_code=True, use_auth_token=False
+        hf_model, trust_remote_code=True, use_auth_token=False
     )
     tokenizer = AutoTokenizer.from_pretrained("beomi/KcELECTRA-base")
     model.to(device)
