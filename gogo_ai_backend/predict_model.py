@@ -3,9 +3,9 @@ import torch
 import pandas as pd
 import asyncio
 
-async def initialize_model_and_tokenizer(checkpoint_path, device):
+async def initialize_model_and_tokenizer(hf_model, device):
     model = AutoModelForSequenceClassification.from_pretrained(
-        checkpoint_path, local_files_only=True, trust_remote_code=True, use_auth_token=False
+        hf_model, local_files_only=True, trust_remote_code=True, use_auth_token=False
     )
     tokenizer = AutoTokenizer.from_pretrained("beomi/KcELECTRA-base")
     model.to(device)
@@ -34,9 +34,9 @@ async def predict_sentence(model, tokenizer, sentence, device):
 
 async def predictor(comment):
     comment = comment
-    checkpoint_path = "../Profanity_Filter/output/checkpoint-52350"
+    hf_model = "kdyeon0309/gogo_forpanity_filter"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model, tokenizer = await initialize_model_and_tokenizer(checkpoint_path, device)
+    model, tokenizer = await initialize_model_and_tokenizer(hf_model, device)
     prediction= await predict_sentence(model, tokenizer, comment, device)
     if prediction == 2:
         prediction = 0
