@@ -1,0 +1,62 @@
+name: GOGO-AI-PROFANITY-FILTER Prod CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            set -e
+
+            ssh -i gogo-prod-ms.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.PROD_TARGET_HOST }} << 'EOF'
+
+            mkdir -p /home/ubuntu/gogo-profanity-filter
+            cd /home/ubuntu/gogo-profanity-filter
+
+            if [ ! -d ".git" ]; then
+              git clone -b master https://github.com/team-gogo/gogo-ai .
+            else
+              git pull origin master
+            fi
+
+            cd gogo_ai_backend && docker build . -t gogo-profanity-filter-prod
+
+            docker stop gogo-profanity-filter-prod || true
+            docker rm gogo-profanity-filter-prod || true
+
+            docker run -d -p 8087:8087 --add-host host.docker.internal:host-gateway --name gogo-profanity-filter-prod gogo-profanity-filter-prod
+
+            EOF
+
+      - name: SSH Success Notification
+        if: success()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          color: 0x4CAF50
+          title: "PROD 배포 성공"
+          message: "GOGO Profanity Filter prod deployment completed successfully."
+
+      - name: SSH Failure Notification
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          color: 0xFF4C4C
+          title: "PROD 배포 실패"
+          message: "GOGO Profanity Filter prod deployment failed. Check the logs for details."
