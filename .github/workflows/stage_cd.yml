@@ -19,7 +19,7 @@ jobs:
           host: ${{ secrets.STAGE_SSH_HOST }}
           port: ${{ secrets.STAGE_SSH_PORT }}
           username: ${{ secrets.STAGE_SSH_USERNAME }}
-          key: ${{ secrets.STAGE_SSH_PASSWORD }}
+          password: ${{ secrets.STAGE_SSH_PASSWORD }}
           script: |
             set -e
 
