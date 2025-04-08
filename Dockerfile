@@ -8,7 +8,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /gogo_ai_backend
 
-COPY . /gogo_ai_backend
+COPY gogo_ai_backend/ /gogo_ai_backend/
 
 RUN poetry install --no-root
 
