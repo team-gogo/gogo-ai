@@ -7,7 +7,7 @@ from aiokafka import AIOKafkaConsumer
 from predict_model import predictor
 from config import KAFKA_HOST, KAFKA_PORT
 from event.producer import EventProducer
-from schema.filter import filtered_result
+from gogo_ai_backend.schema.filter import filtered_result
     
 events={
     'board_create':{
