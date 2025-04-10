@@ -14,7 +14,7 @@ events={
         'output':'boardId',
         'topic':'ai_board_filter'},
     'comment_create':{
-        'output':'comment',
+        'output':'commentId',
         'topic':'ai_comment_filter'},
     }
 
@@ -32,18 +32,20 @@ async def consume():
             logging.info(f'Consume kafka data {msg.topic} value: {data}')
             if 'content' not in data:
                 logging.error(f"Missing 'content' key in message: {data}")
-                continue  # 'content' 키가 없으면 건너뜀
+                continue
             logging.info(f"data: {data['content']}")
             model_output = await predictor(data['content'])
             logging.info(f'Predictor output: {model_output}')
-            await EventProducer.create_event(
-                topic=events[msg.topic]['topic'],
-                key=data['id'],
-                value=filtered_result(
-                    id=data['id'],
-                    **{events[msg.topic]['output']: model_output}
-                ).dict(exclude_none=True),
-            )
+            if model_output == 1:
+                topic_id=events[msg.topic]['output']
+                await EventProducer.create_event(
+                    topic=events[msg.topic]['topic'],
+                    key=data['id'],
+                    value=filtered_result(
+                        id=data['id'],
+                        **{topic_id: data[topic_id]},
+                    ).dict(exclude_none=True),
+                )
             
 
     except Exception as e:
