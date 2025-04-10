@@ -39,7 +39,7 @@ jobs:
              docker stop gogo-profanity-filter-stage || true
              docker rm gogo-profanity-filter-stage || true
 
-             docker run -d -p 8087:8087 --add-host host.docker.internal:host-gateway --name gogo-profanity-filter-stage gogo-profanity-filter-stage
+             docker run -d -p 8087:8087 --add-host host.docker.internal:host-gateway --env-file .env --name gogo-profanity-filter-stage gogo-profanity-filter-stage
 
       - name: SSH Success Notification
         if: success()
