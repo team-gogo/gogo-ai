@@ -23,21 +23,23 @@ jobs:
           script: |
             set -e
 
-            mkdir -p /home/ubuntu/gogo-profanity-filter
-            cd /home/ubuntu/gogo-profanity-filter
+             mkdir -p /home/ubuntu/gogo-profanity-filter
+             cd /home/ubuntu/gogo-profanity-filter
 
-            if [ ! -d ".git" ]; then
-              git clone -b develop https://github.com/team-gogo/gogo-ai .
-            else
-              git pull origin develop
-            fi
+             if [ ! -d ".git" ]; then
+               git clone -b develop https://github.com/team-gogo/gogo-ai .
+             else
+               git reset --hard 
+               git clean -fd  
+               git pull origin develop
+             fi
 
-            docker build . -t gogo-profanity-filter-stage
+             docker build . -t gogo-profanity-filter-stage
 
-            docker stop gogo-profanity-filter-stage || true
-            docker rm gogo-profanity-filter-stage || true
+             docker stop gogo-profanity-filter-stage || true
+             docker rm gogo-profanity-filter-stage || true
 
-            docker run -d -p 8087:8087 --add-host host.docker.internal:host-gateway --name gogo-profanity-filter-stage gogo-profanity-filter-stage
+             docker run -d -p 8087:8087 --add-host host.docker.internal:host-gateway --name gogo-profanity-filter-stage gogo-profanity-filter-stage
 
       - name: SSH Success Notification
         if: success()
