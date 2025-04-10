@@ -266,5 +266,5 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django
-**/.dev.env
-gogo_ai_backend/.dev.env
+**/.env
+.env
