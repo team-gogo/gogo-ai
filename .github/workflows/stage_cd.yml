@@ -27,9 +27,9 @@ jobs:
             cd /home/ubuntu/gogo-profanity-filter
 
             if [ ! -d ".git" ]; then
-              git clone -b master https://github.com/team-gogo/gogo-ai .
+              git clone -b develop https://github.com/team-gogo/gogo-ai .
             else
-              git pull origin master
+              git pull origin develop
             fi
 
             docker build . -t gogo-profanity-filter-stage
