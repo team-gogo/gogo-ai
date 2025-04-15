@@ -16,32 +16,30 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.PROD_SSH_HOST }}
-          port: ${{ secrets.PROD_SSH_PORT }}
-          username: ${{ secrets.PROD_SSH_USERNAME }}
-          key: ${{ secrets.PROD_SSH_KEY }}
+          host: ${{ secrets.STAGE_SSH_HOST }}
+          port: ${{ secrets.STAGE_SSH_PORT }}
+          username: ${{ secrets.STAGE_SSH_USERNAME }}
+          password: ${{ secrets.STAGE_SSH_PASSWORD }}
           script: |
             set -e
 
-            ssh -i gogo-prod-ms.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.PROD_TARGET_HOST }} << 'EOF'
+             mkdir -p /home/ubuntu/gogo-profanity-filter-prod
+             cd /home/ubuntu/gogo-profanity-filter-prod
 
-            mkdir -p /home/ubuntu/gogo-profanity-filter
-            cd /home/ubuntu/gogo-profanity-filter
+             if [ ! -d ".git" ]; then
+               git clone -b master https://github.com/team-gogo/gogo-ai .
+             else
+               git reset --hard 
+               git clean -fd  
+               git pull origin master
+             fi
 
-            if [ ! -d ".git" ]; then
-              git clone -b master https://github.com/team-gogo/gogo-ai .
-            else
-              git pull origin master
-            fi
+             docker build . -t gogo-profanity-filter-prod
 
-            docker build . -t gogo-profanity-filter-prod
+             docker stop gogo-profanity-filter-prod || true
+             docker rm gogo-profanity-filter-prod || true
 
-            docker stop gogo-profanity-filter-prod || true
-            docker rm gogo-profanity-filter-prod || true
-
-            docker run -d -p 8087:8087 --add-host host.docker.internal:host-gateway --name gogo-profanity-filter-prod gogo-profanity-filter-prod
-
-            EOF
+             docker run -d --add-host host.docker.internal:host-gateway --env-file .env --name gogo-profanity-filter-prod gogo-profanity-filter-prod
 
       - name: SSH Success Notification
         if: success()
