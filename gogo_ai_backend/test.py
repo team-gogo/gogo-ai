@@ -1,6 +1,7 @@
 import uuid
 import json
 from kafka import KafkaProducer
+import random
 
 producer = KafkaProducer(
     bootstrap_servers='127.0.0.1:9092',
@@ -9,7 +10,8 @@ producer = KafkaProducer(
 
 event = {
     "id": str(uuid.uuid4()),
-    "content": "느금마 좆같은년아"
+    "content": "안녕하세욥",
+    "boardId": random.randint(1, 1000)
 }
 
 future = producer.send('board_create', event)
