@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-load_dotenv('../.env')
+load_dotenv('../.env', override=False)
 
 EUREKA_HOST = os.environ.get('EUREKA_HOST')
 EUREKA_PORT = os.environ.get('EUREKA_PORT')
