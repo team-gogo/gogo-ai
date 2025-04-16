@@ -5,7 +5,7 @@ import uvicorn
 from middleware import LoggingMiddleware
 from event.consumer import consume
 from contextlib import asynccontextmanager
-from eureka import init_eureka
+# from eureka import init_eureka
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
