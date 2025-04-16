@@ -5,7 +5,7 @@ from typing import Optional
 
 from aiokafka import AIOKafkaConsumer
 from predict_model import predictor
-from config import KAFKA_HOST, KAFKA_PORT
+from config import get_kafka_host, get_kafka_port
 from event.producer import EventProducer
 from schema.filter import filtered_result
     
@@ -22,14 +22,14 @@ async def consume():
     event=list(events.keys())
     consumer = AIOKafkaConsumer(
         event[0], event[1], 
-        bootstrap_servers=f'{KAFKA_HOST}:{KAFKA_PORT}',
+        bootstrap_servers=f'{get_kafka_host()}:{get_kafka_port()}',
     )
 
     await consumer.start()
     try:
         async for msg in consumer:
             data = json.loads(msg.value.decode('utf-8'))
-            logging.info(f'Kafka host: {KAFKA_HOST}, Kafka port: {KAFKA_PORT}')
+            logging.info(f'Kafka host: {get_kafka_host()}, Kafka port: {get_kafka_port()}')
             logging.info(f'Consume kafka data {msg.topic} value: {data}')
             if 'content' not in data:
                 logging.error(f"Missing 'content' key in message: {data}")
