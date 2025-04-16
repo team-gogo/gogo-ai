@@ -11,5 +11,8 @@ load_dotenv('../.env', override=False)
 # INSTANCE_HOST = os.environ.get('INSTANCE_HOST')
 # INSTANCE_PORT = int(os.environ.get('INSTANCE_PORT'))
 
-KAFKA_HOST = os.environ.get('KAFKA_HOST')
-KAFKA_PORT = os.environ.get('KAFKA_PORT')
+def get_kafka_host():
+    return os.getenv('KAFKA_HOST')
+
+def get_kafka_port():
+    return os.getenv('KAFKA_PORT')
