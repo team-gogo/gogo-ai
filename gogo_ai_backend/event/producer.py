@@ -5,7 +5,7 @@ from typing import Optional, Union
 from aiokafka import AIOKafkaProducer
 from pydantic import BaseModel
 
-from config import KAFKA_HOST, KAFKA_PORT
+from config import get_kafka_host, get_kafka_port
 
 
 class EventProducer:
@@ -14,7 +14,7 @@ class EventProducer:
     @staticmethod
     async def get_producer():
         if not EventProducer.producer:
-            EventProducer.producer = AIOKafkaProducer(bootstrap_servers=f'{KAFKA_HOST}:{KAFKA_PORT}')
+            EventProducer.producer = AIOKafkaProducer(bootstrap_servers=f'{get_kafka_host()}:{get_kafka_port()}')
             await EventProducer.producer.start()
             logging.info(f'Producer is started.')
         return EventProducer.producer
