@@ -29,6 +29,7 @@ async def consume():
     try:
         async for msg in consumer:
             data = json.loads(msg.value.decode('utf-8'))
+            logging.info(f'Kafka host: {KAFKA_HOST}, Kafka port: {KAFKA_PORT}')
             logging.info(f'Consume kafka data {msg.topic} value: {data}')
             if 'content' not in data:
                 logging.error(f"Missing 'content' key in message: {data}")

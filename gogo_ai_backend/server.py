@@ -24,8 +24,8 @@ async def root():
  
 if __name__ == '__main__':
     try:
-        init_eureka()
-        logging.info('init eureka')
+        # init_eureka()
+        # logging.info('init eureka')
         uvicorn.run(app, host='0.0.0.0', port=8087, log_level='info', access_log=False)
     except Exception as e:
         print(e)
