@@ -22,7 +22,6 @@ jobs:
           password: ${{ secrets.STAGE_SSH_PASSWORD }}
           script: |
             set -e
-
              mkdir -p /home/ubuntu/gogo-profanity-filter-prod
              cd /home/ubuntu/gogo-profanity-filter-prod
 
@@ -39,7 +38,7 @@ jobs:
              docker stop gogo-profanity-filter-prod || true
              docker rm gogo-profanity-filter-prod || true
 
-             docker run -d --add-host host.docker.internal:host-gateway --env-file .env --name gogo-profanity-filter-prod gogo-profanity-filter-prod
+             docker run -d --env-file .env --name gogo-profanity-filter-prod gogo-profanity-filter-prod
 
       - name: SSH Success Notification
         if: success()
