@@ -6,7 +6,7 @@ import numpy as np
 
 
 image_folder_path = r"AI_relay\\data\\datasets\\Training\\images\\"  # 이미지 폴더
-label_folder_path = r"AI_relay\\data\\datasets\\Training\\txt_label"  # YOLO 라벨 폴더
+label_folder_path = r"AI_relay\\data\\datasets\\Training\\labels"  # YOLO 라벨 폴더
 image_filename = "E02_EE01_221110_T006_CH07_X01_f002418.jpg"  # 이미지 파일명,
 
 
