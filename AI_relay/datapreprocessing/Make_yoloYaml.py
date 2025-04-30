@@ -2,10 +2,9 @@
 import yaml
 
 data = {
-    "path" : 'G:\\다른 컴퓨터\\내 노트북\\ai\\gogo v3\\AI_relay\\data\\datasets',
-    "train" : '\\Training\\',
-        "val" : '\\Validation\\',
-        "names" : {0 : 'player', 1 : 'ball', 2 : 'goalpost'}}
+    "train" : 'G:\\다른 컴퓨터\\내 노트북\\ai\\gogo v3\\AI_relay\\data\\datasets\\Training\\',
+        "val" : 'G:\\다른 컴퓨터\\내 노트북\\ai\\gogo v3\\AI_relay\\data\\datasets\\Validation\\',
+        "names" : {1 : 'ball'}}
 
 with open('AI_relay\\yolo.yaml', 'w') as f :
     yaml.dump(data, f)
