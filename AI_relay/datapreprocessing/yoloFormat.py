@@ -11,7 +11,7 @@ for data_type in datatype:
     image_folder_pah = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\images\\"
     output_folder_path = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\labels"
     file_list = os.listdir(label_folder_path)
-    class_dict = {"공": 1}
+    class_dict = {"공": 0}
     os.makedirs(output_folder_path, exist_ok=True)
 
     for file in tqdm.tqdm(file_list, desc=f"Converting {data_type} labels"):
