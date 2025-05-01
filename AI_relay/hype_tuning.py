@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-model = YOLO('yolov11m.pt')  
+model = YOLO('yolo11m.pt')  
 
 model.tune(
     data='./yolo.yaml',
