@@ -1,4 +1,5 @@
 from ultralytics import YOLO
+import os
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 model = YOLO('yolo11m.pt')  
