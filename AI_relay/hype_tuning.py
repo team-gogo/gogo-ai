@@ -7,7 +7,7 @@ model = YOLO('yolo11m.pt')
 model.tune(
     data='./yolo.yaml',
     epochs=5,              
-    iterations=50,   #하이퍼파라미터튜닝 횟수수
+    iterations=25,   #하이퍼파라미터튜닝 횟수
     imgsz=1280,             
     device='cuda',
     batch=4,      
