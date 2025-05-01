@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-image_folder_path = r"AI_relay\\data\\datasets\\Training\\images\\"  # 이미지 폴더
-label_folder_path = r"AI_relay\\data\\datasets\\Training\\txt_label"  # YOLO 라벨 폴더
-image_filename = "E02_EE01_221110_T006_CH07_X01_f002418.jpg"  # 이미지 파일명,
+image_folder_path = r"c:\\Users\\kdyeo\\gogo\\Validation\\images\\"  # 이미지 폴더
+label_folder_path = r"c:\\Users\\kdyeo\\gogo\\Validation\\labels\\"  # YOLO 라벨 폴더
+image_filename = "E01_EE01_221110_T007_CH08_Z01_f000362.jpg"  # 이미지 파일명,
 
 
 class_colors = {
-    1: (0, 0, 255),  # 공 - 빨간색
+    0: (0, 0, 255),  # 공 - 빨간색
 }
 
 image_path = os.path.join(image_folder_path, image_filename)

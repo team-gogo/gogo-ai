@@ -38,7 +38,7 @@ def main():
     model = YOLO(r'runs\\detect\\exp1\\weights\\best.pt')  
 
 
-    image_folder = r'AI_relay\\data\\datasets\\Validation\\images'
+    image_folder = r'C:\\Users\\kdyeo\\gogo\\Validation\\'
     random_images = load_random_images(image_folder, num_images=6)
 
     visualize_predictions(model, random_images)
