@@ -5,13 +5,13 @@ import os
 import tqdm
 
 
-datatype=["Training","Validation"]
+datatype=["Training","Validation","Test"]
 for data_type in datatype:
     label_folder_path = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\json_labels\\"
     image_folder_pah = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\images\\"
     output_folder_path = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\labels"
     file_list = os.listdir(label_folder_path)
-    class_dict = {"공": 0}
+    class_dict = {"선수": 0, "공": 1, "골대": 2}
     os.makedirs(output_folder_path, exist_ok=True)
 
     for file in tqdm.tqdm(file_list, desc=f"Converting {data_type} labels"):
@@ -29,7 +29,7 @@ for data_type in datatype:
         
         with open(yolo_label_path, "w") as yolo_file:
             for obj in data["annotation"]:
-                if "box" in obj:
+                if "box" in obj:  # 선수, 공
                     label = obj["box"]["label"]
                     if label in class_dict:
                         points = obj["box"]["location"][0]
@@ -41,5 +41,22 @@ for data_type in datatype:
 
                         # YOLO 포맷 저장
                         yolo_file.write(f"{class_dict[label]} {x_center} {y_center} {width} {height}\n")
+
+                elif "polygon" in obj and obj["polygon"]["label"] == "골대":  # 골대 (Polygon → BBox 변환)
+                    points = obj["polygon"]["location"][0]
+                    x_values = [points[f"x{i}"] for i in range(1, len(points) // 2 + 1)]
+                    y_values = [points[f"y{i}"] for i in range(1, len(points) // 2 + 1)]
+
+                    x_min, x_max = min(x_values), max(x_values)
+                    y_min, y_max = min(y_values), max(y_values)
+                    width = x_max - x_min
+                    height = y_max - y_min
+                    x_center = (x_min + width / 2) / img_width
+                    y_center = (y_min + height / 2) / img_height
+                    width /= img_width
+                    height /= img_height
+
+                    # YOLO 포맷 저장
+                    yolo_file.write(f"{class_dict['골대']} {x_center} {y_center} {width} {height}\n")
 
 print("YOLO 라벨 변환 완료!")

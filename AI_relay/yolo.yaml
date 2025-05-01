@@ -1,4 +1,8 @@
 names:
   0: ball
+  1: player
+  2: goal
+nc: 3
+test: C:\Users\kdyeo\gogo\Test\
 train: C:\Users\kdyeo\gogo\Training\
 val: C:\Users\kdyeo\gogo\Validation\

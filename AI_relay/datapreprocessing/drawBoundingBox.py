@@ -12,6 +12,8 @@ image_filename = "E01_EE01_221110_T007_CH08_Z01_f000362.jpg"  # 이미지 파일
 
 class_colors = {
     0: (0, 0, 255),  # 공 - 빨간색
+    1: (0, 255, 0),  # 선수 - 초록색
+    2: (255, 0, 0),  # 골대 - 파란색
 }
 
 image_path = os.path.join(image_folder_path, image_filename)
