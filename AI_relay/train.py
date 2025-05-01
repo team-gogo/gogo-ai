@@ -5,17 +5,17 @@ def main():
     model = YOLO('yolo11n.pt')  
 
     model.train(
-        data="AI_relay/yolo.yaml",
+        data="./yolo.yaml",
         epochs=50,
-        imgsz=1024,
-        batch=10,
+        imgsz=1280,
+        batch=4,
         name='exp1',  
         device='cuda',  
-        verbose=True
+        verbose=True,
     )
 
   
-    weights_path = 'runs/train/exp1/weights/best.pt'
+    weights_path = 'AI_relay/runs/train/exp1/weights/best.pt'
     if os.path.exists(weights_path):
         print(f"모델이 성공적으로 저장됨: {weights_path}")
     else:
