@@ -9,9 +9,10 @@ def main():
         epochs=50,
         imgsz=1280,
         batch=4,
-        name='exp1',  
+        name='train_exp',  
         device='cuda',  
         verbose=True,
+        resume=True,  #이전 훈련 결과를 이어서 진행
     )
 
   
