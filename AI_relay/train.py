@@ -13,6 +13,7 @@ def main():
         name='final_tuned_exp',
         device='cuda',
         optimizer='Adam',
+        resume=True,
         
         # 튜닝된 하이퍼파라미터
         lr0=0.00479,
