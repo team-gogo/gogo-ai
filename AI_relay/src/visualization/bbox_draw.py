@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-image_folder_path = r"c:\\Users\\kdyeo\\gogo\\Validation\\images\\"  # 이미지 폴더
-label_folder_path = r"c:\\Users\\kdyeo\\gogo\\Validation\\labels\\"  # YOLO 라벨 폴더
+image_folder_path = r"../../data/datasets/Validation/images/"  # 이미지 폴더
+label_folder_path = r"../../data/datasets/Validation/labels/"  # YOLO 라벨 폴더
 image_filename = "E01_EE01_221110_T007_CH08_Z01_f000362.jpg"  # 이미지 파일명,
 
 

@@ -42,12 +42,12 @@ def process_video(video_path, model, output_folder, input_size=(1280, 1280)):
 
 
 def main():
-    video_folder = 'AI_relay/data/datasets/Videos'  # 영상 폴더
-    output_folder = 'AI_relay/data/datasets/Results'  # 결과 저장 폴더
+    video_folder = '../../data/datasets/Videos'  # 영상 폴더
+    output_folder = '../../data/datasets/Results'  # 결과 저장 폴더
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    model = YOLO('G:\\다른 컴퓨터\\내 노트북\\ai\\gogo v3\\AI_relay\\runs\\detect\\exp1\\weights\\best.pt')
+    model = YOLO('..\\..\\experiments\\runs\\detect\\exp1\\weights\\best.pt')
     for video_file in os.listdir(video_folder):
         if video_file.endswith(('.mp4')):  
             video_path = os.path.join(video_folder, video_file)

@@ -2,10 +2,10 @@ import os
 import shutil
 import random
 
-valid_img_dir = f"C:\\Users\\kdyeo\\gogo\\Validation\\images\\"
-valid_label_dir = f"C:\\Users\\kdyeo\\gogo\\Validation\\json_labels\\"
-test_img_dir = f"C:\\Users\\kdyeo\\gogo\\Test\\images\\"
-test_label_dir = f"C:\\Users\\kdyeo\\gogo\\Test\\json_labels\\"
+valid_img_dir = f"../../data/datasets/Validation/images/"
+valid_label_dir = f"../../data/datasets/Validation/json_labels/"
+test_img_dir = f"../../data/datasets/Test/images/"
+test_label_dir = f"../../data/datasets/Test/json_labels/"
 
 os.makedirs(test_img_dir, exist_ok=True)
 os.makedirs(test_label_dir, exist_ok=True)
