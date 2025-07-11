@@ -7,9 +7,9 @@ import tqdm
 
 datatype=["Training","Validation","Test"]
 for data_type in datatype:
-    label_folder_path = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\json_labels\\"
-    image_folder_pah = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\images\\"
-    output_folder_path = f"C:\\Users\\kdyeo\\gogo\\{data_type}\\labels"
+    label_folder_path = f"../../data/datasets/{data_type}/json_labels/"
+    image_folder_pah = f"../../data/datasets/{data_type}/images/"
+    output_folder_path = f"../../data/datasets/{data_type}/labels/"
     file_list = os.listdir(label_folder_path)
     class_dict = {"선수": 0, "공": 1, "골대": 2}
     os.makedirs(output_folder_path, exist_ok=True)

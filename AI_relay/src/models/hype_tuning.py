@@ -2,10 +2,10 @@ from ultralytics import YOLO
 import os
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-model = YOLO('yolo11m.pt')  
+model = YOLO('../../basic_models/yolo11m.pt')  
 
 model.tune(
-    data='./yolo.yaml',
+    data='../../config/yolo.yaml',
     epochs=5,              
     iterations=50,   #하이퍼파라미터튜닝 횟수
     imgsz=1280,             

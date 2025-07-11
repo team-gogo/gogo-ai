@@ -35,10 +35,10 @@ def visualize_predictions(model, image_paths):
 
 def main():
  
-    model = YOLO(r'runs\\detect\\exp1\\weights\\best.pt')  
+    model = YOLO(r'..\\..\\experiments\\runs\\detect\\exp1\\weights\\best.pt')  
 
 
-    image_folder = r'C:\\Users\\kdyeo\\gogo\\Validation\\'
+    image_folder = r'..\\..\\data\\datasets\\Validation\\'
     random_images = load_random_images(image_folder, num_images=6)
 
     visualize_predictions(model, random_images)
