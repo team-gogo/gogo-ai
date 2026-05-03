@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -7,6 +8,13 @@ from typing import Optional
 import torch
 import yaml
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+from metrics import (
+    MODEL_INFO,
+    MODEL_LOAD_DURATION,
+    PREDICT_LATENCY,
+    PREDICTION_TOTAL,
+)
 
 _MODELS_YAML = Path(__file__).parent / "models.yaml"
 
@@ -55,8 +63,16 @@ class ModelService:
                 model.eval()
                 return model, tokenizer
 
+            load_start = time.perf_counter()
             cls._model, cls._tokenizer = await asyncio.to_thread(_load_blocking)
+            MODEL_LOAD_DURATION.observe(time.perf_counter() - load_start)
             cls._loaded_at = datetime.now(timezone.utc).isoformat()
+            MODEL_INFO.labels(
+                model=cls.HF_MODEL,
+                revision=cls.HF_REVISION,
+                tokenizer=cls.TOKENIZER,
+                tokenizer_revision=cls.TOKENIZER_REVISION,
+            ).set(1)
             logging.info("Profanity model loaded")
 
     @classmethod
@@ -93,9 +109,12 @@ class ModelService:
         if cls._model is None:
             await cls.load()
 
-        prediction = await asyncio.to_thread(cls._predict_blocking, sentence)
+        revision_label = cls.HF_REVISION[:8]
+        with PREDICT_LATENCY.labels(model_revision=revision_label).time():
+            prediction = await asyncio.to_thread(cls._predict_blocking, sentence)
         if prediction == 2:
             prediction = 1
+        PREDICTION_TOTAL.labels(label=str(prediction), model_revision=revision_label).inc()
         return prediction
 
 
