@@ -7,3 +7,8 @@ profanity_filter:
   registered_at: "2026-05-03"
   training_run_id: null
   eval_metrics: null
+  train_dataset:
+    uri: null
+    sha256: null
+    file_count: null
+    size_bytes: null
