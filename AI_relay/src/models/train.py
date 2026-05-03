@@ -1,8 +1,14 @@
-from ultralytics import YOLO
 import os
+
+from ultralytics import YOLO, settings
+
 
 def main():
     os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+    os.environ.setdefault('MLFLOW_TRACKING_URI', 'file:./mlruns')
+    os.environ.setdefault('MLFLOW_EXPERIMENT', 'ai_relay_yolo')
+    settings.update({"mlflow": True})
+
     model = YOLO('../../models/yolo11m.pt')
 
     model.train(
@@ -15,6 +21,7 @@ def main():
         optimizer='Adam',
         resume=True,
     )
+
 
 if __name__ == '__main__':
     main()
