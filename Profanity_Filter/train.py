@@ -1,12 +1,11 @@
-import pandas as pd
-import matplotlib.pyplot as plt
+import os
+
+import mlflow
 import torch
 from model.data_loader import main
 from evaluate import compute_metrics
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
-from sklearn.metrics import precision_recall_fscore_support, accuracy_score
+from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 
-# 상수 정의
 NUM_LABELS = 3
 OUTPUT_DIR = './output/'
 NUM_EPOCHS = 50
@@ -16,21 +15,24 @@ LOGGING_DIR = './output/logs'
 LOGGING_STEPS = 500
 SAVE_TOTAL_LIMIT = 2
 
+MLFLOW_TRACKING_URI = os.environ.get('MLFLOW_TRACKING_URI', 'file:./mlruns')
+MLFLOW_EXPERIMENT = os.environ.get('MLFLOW_EXPERIMENT', 'profanity_filter')
+
+
 def setup_device():
-    """GPU 설정."""
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     print("device:", device)
     return device
 
+
 def load_data_and_model(device):
-    """데이터셋과 모델 로드."""
     train_dataset, valid_dataset, MODEL_NAME = main()
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=NUM_LABELS)
     model.to(device)
-    return train_dataset, valid_dataset, model
+    return train_dataset, valid_dataset, model, MODEL_NAME
 
-def train_model(train_dataset, valid_dataset, model):
-    """모델 학습."""
+
+def train_model(train_dataset, valid_dataset, model, base_model_name):
     training_args = TrainingArguments(
         output_dir=OUTPUT_DIR,
         num_train_epochs=NUM_EPOCHS,
@@ -39,6 +41,7 @@ def train_model(train_dataset, valid_dataset, model):
         logging_dir=LOGGING_DIR,
         logging_steps=LOGGING_STEPS,
         save_total_limit=SAVE_TOTAL_LIMIT,
+        report_to=["mlflow"],
     )
 
     trainer = Trainer(
@@ -49,10 +52,23 @@ def train_model(train_dataset, valid_dataset, model):
         compute_metrics=compute_metrics,
     )
 
-    trainer.train()
-    trainer.evaluate(eval_dataset=valid_dataset)
+    with mlflow.start_run() as run:
+        mlflow.set_tags({
+            "framework": "transformers",
+            "task": "profanity_classification",
+            "base_model": base_model_name,
+            "num_labels": NUM_LABELS,
+        })
+        trainer.train()
+        final_metrics = trainer.evaluate(eval_dataset=valid_dataset)
+        mlflow.log_metrics({f"final_{k}": v for k, v in final_metrics.items() if isinstance(v, (int, float))})
+        mlflow.log_artifacts(OUTPUT_DIR, artifact_path="model")
+        print(f"MLflow run: {run.info.run_id}")
+
 
 if __name__ == "__main__":
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    mlflow.set_experiment(MLFLOW_EXPERIMENT)
     device = setup_device()
-    train_dataset, valid_dataset, model = load_data_and_model(device)
-    train_model(train_dataset, valid_dataset, model)
+    train_dataset, valid_dataset, model, base_model_name = load_data_and_model(device)
+    train_model(train_dataset, valid_dataset, model, base_model_name)
