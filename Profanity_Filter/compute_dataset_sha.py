@@ -1,23 +1,27 @@
 import hashlib
+import os
 import sys
 from pathlib import Path
-
-CHUNK = 1 << 20
 
 
 def compute_dir_sha(root: Path) -> dict:
     h = hashlib.sha256()
-    files = sorted(p for p in root.rglob("*") if p.is_file())
+    files = sorted(
+        Path(dirpath) / filename
+        for dirpath, _, filenames in os.walk(root)
+        for filename in filenames
+    )
     total_bytes = 0
     for p in files:
         rel = p.relative_to(root).as_posix().encode()
         h.update(len(rel).to_bytes(4, "big"))
         h.update(rel)
-        size = p.stat().st_size
-        h.update(size.to_bytes(8, "big"))
         with p.open("rb") as f:
-            for chunk in iter(lambda: f.read(CHUNK), b""):
-                h.update(chunk)
+            f.seek(0, os.SEEK_END)
+            size = f.tell()
+            f.seek(0)
+            h.update(size.to_bytes(8, "big"))
+            hashlib.file_digest(f, lambda: h)
         total_bytes += size
     return {
         "sha256": h.hexdigest(),

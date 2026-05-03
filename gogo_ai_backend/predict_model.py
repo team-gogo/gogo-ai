@@ -30,6 +30,7 @@ class ModelService:
     HF_REVISION: str = _config["revision"]
     TOKENIZER: str = _config["tokenizer"]["hf_repo"]
     TOKENIZER_REVISION: str = _config["tokenizer"]["revision"]
+    _revision_label: str = HF_REVISION[:8]
 
     _model: Optional[AutoModelForSequenceClassification] = None
     _tokenizer: Optional[AutoTokenizer] = None
@@ -45,7 +46,7 @@ class ModelService:
 
             cls._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             logging.info(
-                f"Loading profanity model '{cls.HF_MODEL}@{cls.HF_REVISION[:8]}' on {cls._device}"
+                f"Loading profanity model '{cls.HF_MODEL}@{cls._revision_label}' on {cls._device}"
             )
 
             def _load_blocking():
@@ -109,12 +110,14 @@ class ModelService:
         if cls._model is None:
             await cls.load()
 
-        revision_label = cls.HF_REVISION[:8]
-        with PREDICT_LATENCY.labels(model_revision=revision_label).time():
+        with PREDICT_LATENCY.labels(model_revision=cls._revision_label).time():
             prediction = await asyncio.to_thread(cls._predict_blocking, sentence)
         if prediction == 2:
             prediction = 1
-        PREDICTION_TOTAL.labels(label=str(prediction), model_revision=revision_label).inc()
+        PREDICTION_TOTAL.labels(
+            label=str(prediction),
+            model_revision=cls._revision_label,
+        ).inc()
         return prediction
 
 

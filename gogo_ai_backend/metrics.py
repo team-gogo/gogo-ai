@@ -4,6 +4,9 @@
 """
 from prometheus_client import Counter, Gauge, Histogram
 
+KAFKA_STATUS_PROCESSED = "processed"
+KAFKA_STATUS_SKIPPED = "skipped"
+
 PREDICT_LATENCY = Histogram(
     "profanity_predict_latency_seconds",
     "Profanity inference latency",

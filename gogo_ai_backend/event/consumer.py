@@ -7,7 +7,7 @@ from aiokafka import AIOKafkaConsumer
 from predict_model import predictor
 from config import get_kafka_host, get_kafka_port
 from event.producer import EventProducer
-from metrics import KAFKA_MESSAGE_TOTAL
+from metrics import KAFKA_MESSAGE_TOTAL, KAFKA_STATUS_PROCESSED, KAFKA_STATUS_SKIPPED
 from schema.filter import filtered_result
     
 events={
@@ -34,12 +34,12 @@ async def consume():
             logging.info(f'Consume kafka data {msg.topic} value: {data}')
             if 'content' not in data:
                 logging.error(f"Missing 'content' key in message: {data}")
-                KAFKA_MESSAGE_TOTAL.labels(topic=msg.topic, status="skipped").inc()
+                KAFKA_MESSAGE_TOTAL.labels(topic=msg.topic, status=KAFKA_STATUS_SKIPPED).inc()
                 continue
             logging.info(f"data: {data['content']}")
             model_output = await predictor(data['content'])
             logging.info(f'Predictor output: {model_output}')
-            KAFKA_MESSAGE_TOTAL.labels(topic=msg.topic, status="processed").inc()
+            KAFKA_MESSAGE_TOTAL.labels(topic=msg.topic, status=KAFKA_STATUS_PROCESSED).inc()
             if model_output == 1:
                 topic_id=events[msg.topic]['output']
                 await EventProducer.create_event(
