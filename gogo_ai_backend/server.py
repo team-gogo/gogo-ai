@@ -22,7 +22,10 @@ app.add_middleware(LoggingMiddleware)
 
 @app.get("/ai/health")
 async def root():
-    return 'GOGO Ai Service OK'
+    return {
+        "status": "ok",
+        "model": ModelService.info(),
+    }
  
 if __name__ == '__main__':
     try:
