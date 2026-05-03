@@ -2,6 +2,12 @@ poetry.lock
 AI_relay/data
 Profanity_Filter/data/
 
+# MLflow & 학습 산출물
+mlruns/
+mlartifacts/
+**/runs/
+Profanity_Filter/output/
+
 # Created by https://www.toptal.com/developers/gitignore/api/python,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django
 
