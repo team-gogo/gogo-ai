@@ -4,11 +4,13 @@ import asyncio
 import uvicorn
 from middleware import LoggingMiddleware
 from event.consumer import consume
+from predict_model import ModelService
 from contextlib import asynccontextmanager
 # from eureka import init_eureka
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await ModelService.load()
     asyncio.create_task(consume())  # 비동기 태스크 실행
     yield
  
