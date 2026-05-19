@@ -1,0 +1,14 @@
+profanity_filter:
+  hf_repo: kdyeon0309/gogo_forpanity_filter
+  revision: 52af3a112563eb58346a0a2e031b9705676add4f
+  tokenizer:
+    hf_repo: beomi/KcELECTRA-base
+    revision: 681201a097b8120e6dd2a2e63a3e13d338736f88
+  registered_at: "2026-05-03"
+  training_run_id: null
+  eval_metrics: null
+  train_dataset:
+    uri: null
+    sha256: null
+    file_count: null
+    size_bytes: null

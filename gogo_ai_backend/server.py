@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import logging
 import asyncio
 import uvicorn
+from prometheus_client import make_asgi_app
 from middleware import LoggingMiddleware
 from event.consumer import consume
 from predict_model import ModelService
@@ -13,16 +14,20 @@ async def lifespan(app: FastAPI):
     await ModelService.load()
     asyncio.create_task(consume())  # 비동기 태스크 실행
     yield
- 
+
 
 app = FastAPI(lifespan=lifespan)
 
 logging.basicConfig(level=logging.INFO)
 app.add_middleware(LoggingMiddleware)
+app.mount("/metrics", make_asgi_app())
 
 @app.get("/ai/health")
 async def root():
-    return 'GOGO Ai Service OK'
+    return {
+        "status": "ok",
+        "model": ModelService.info(),
+    }
  
 if __name__ == '__main__':
     try:
